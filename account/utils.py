@@ -14,7 +14,7 @@ class SendEmail(threading.Thread):
 
 def send_activation_email(recipient_email, activation_url):
     subject='Activate your account on'+settings.SITE_NAME
-    from_email='no_reply@something.com'
+    from_email='unknownvanja1@gmail.com'
     to_email=[recipient_email]
 
     html_content=render_to_string('account/activation_email.html',{'activation_url':activation_url})
