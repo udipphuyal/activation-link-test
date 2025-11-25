@@ -124,12 +124,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL='account.User'
-SITE_DOMAIN='http://127.0.0.1:8000/'
+SITE_DOMAIN='http://127.0.0.1:8000'
 SITE_NAME='Auth system'
 
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'unknownvanja1@gmail.com'
-EMAIL_HOST_PASSWORD = 'mgqn bawo qpkz chen'
+EMAIL_HOST_PASSWORD = 'neju nkut lrcc sxha'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS=True
+
+LOGOUT_REDIRECT_URL='login'
+LOGIN_URL='login'

@@ -8,14 +8,52 @@ from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
 from account.utils import send_activation_email
 from account.models import User
+from django.contrib.auth import authenticate ,login
 
 # Create your views here.
 def home(req):
     return render(req,'account/home.html')
 
 def login_view(req):
+    if req.user.is_authenticated:
+        if req.user.is_seller:
+            return redirect('seller_dashboard')
+        elif req.user.is_customer:
+            return redirect('customer_dashboard')
+        return redirect('home')
     if req.method=='POST':
-       return redirect('customer_dashboard')
+        email=req.POST.get('email')
+        password=req.POST.get('password')
+
+        if not email and password:
+           messages.error(req,'Both fields are required')
+           return redirect('login')
+        try:
+            user=User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(req,'Invalid email or password')
+            return redirect('login')
+        if not user.is_active:
+            messages.error(req,'Your account is inactive.please activate your account')
+            return redirect('login')
+        
+        user=authenticate(req,email=email,password=password)
+
+        if user is not None:
+            login(req, user)
+            if user.is_seller:
+                return redirect('seller_dashboard')
+            elif user.is_customer:
+                return redirect('customer_dashboard')
+            else:
+               messages.error(req,'you dont have permission to access this area')
+               return redirect('home') 
+        else:
+            messages.error(req,'Invalid email or password')
+            return redirect('login')
+        
+        
+    
     return render(req,'account/login.html')
 
 def register_view(req):
